@@ -1,4 +1,5 @@
 # chat-forum
+A chat forum developed with vue.js, Vue router and vuex
 
 ## Project setup
 ```
