@@ -5,7 +5,7 @@
       <button class="btn">Edit thread</button>
     </div>
 
-    <div class="thread-first-post">
+    <!-- <div class="thread-first-post">
       <div class="post-user-img">
 
       </div>
@@ -13,7 +13,7 @@
         <p class="post-user-username">{{ firstPostUsername }} <span>{{ publishedAt }}</span></p>
         <p class="first-post-text">{{ firstPostText }}</p>
       </div>
-    </div>
+    </div> -->
 
     <div class="new-post">
       <div class="auth-user-img">

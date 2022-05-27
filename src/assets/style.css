@@ -112,3 +112,13 @@ h1, h2 {
   font-size: 1.3rem;
   font-weight: 500;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #fcfcfc;
+}
+::-webkit-scrollbar-thumb {
+  background: #383838;
+}
