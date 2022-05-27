@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView'
 import CategoryView from '@/views/CategoryView'
 import ForumsView from '@/views/ForumsView'
 import ThreadsView from '@/views/ThreadsView'
+import ThreadPosts from '@/views/ThreadPosts'
 import ProfileView from '@/views/ProfileView'
 
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
     name: 'ThreadsView',
     path: '/threads',
     component: ThreadsView
+  },
+  {
+    name: 'ThreadPosts',
+    path: '/threads/:id',
+    component: ThreadPosts
   },
   {
     name: 'ProfileView',

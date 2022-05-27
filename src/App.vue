@@ -14,16 +14,5 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
-
-  body {
-    font-size: 16px;
-    font-family: 'Lato';
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-    background: #fcfcfc;
-  }
-  h1, h2 {
-    font-weight: 300;
-  }
+@import '@/assets/style.css';
 </style>
