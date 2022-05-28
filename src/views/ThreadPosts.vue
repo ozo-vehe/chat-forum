@@ -1,37 +1,49 @@
 <template>
   <div class="thread-posts">
     <div class="thread-title">
-      <h1>{{ threadTitle }}</h1>
+      <h1>{{ thread.title }}</h1>
       <button class="btn">Edit thread</button>
     </div>
 
-    <!-- <div class="thread-first-post">
-      <div class="post-user-img">
+    <div class="thread-info">
+      <p>
+        <span>Thread Author: {{ getUser(thread.userId).name }}</span>
+        <span>Contributors: {{ thread.contributors ? thread.contributors.length - 1 : 0 }}</span>
+      </p>
+      <p>Created: {{ thread.publishedAt }}</p>
+    </div>
 
+    <div class="first-post">
+      <div class="user-img">
+        <img :src="getUser(firstPost.userId).avatar" alt="">
       </div>
-      <div class="first-post">
-        <p class="post-user-username">{{ firstPostUsername }} <span>{{ publishedAt }}</span></p>
-        <p class="first-post-text">{{ firstPostText }}</p>
-      </div>
-    </div> -->
-
-    <div class="new-post">
-      <div class="auth-user-img">
-
-      </div>
-      <div class="auth-user-input">
-        <textarea id="auth-user-text"></textarea>
-        <button class="add-post btn">Post</button>
+      <div class="user-post">
+        <p>{{ firstPost.text }}</p>
       </div>
     </div>
 
-    <PostList :posts="threadPosts" />
+    <div class="new-post">
+      <div class="auth-user-img">
+        <img :src="authUser.avatar" alt="">
+      </div>
+      <div class="auth-user-input">
+        <textarea id="auth-user-text" v-model.lazy.trim="newPost" required></textarea>
+        <button @click="post" class="add-post btn">Post</button>
+      </div>
+    </div>
+
+    <div class="post-comments">
+      <p>Comments: {{ thread.posts ? thread.posts.length - 1 : 0 }}</p>
+    </div>
+
+    <PostList :posts="otherPosts" />
   </div>
 </template>
 
 <script>
 import data from '@/data.json'
 import PostList from '@/components/PostList'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'ThreadPosts',
@@ -42,19 +54,59 @@ export default {
     return {
       posts: data.posts,
       threads: data.threads,
-      threadId: null
+      users: data.users,
+      threadId: null,
+      newPost: null
     }
   },
-  computed: {
+  methods: {
+    getUser (userId) {
+      const user = this.users.find(user => user.id === userId)
+      return user
+    },
     threadPosts () {
       return this.posts.filter(post => post.threadId === this.threadId)
     },
-    threadTitle () {
-      return this.threads.find(thread => thread.id === this.threadId).title
+    post () {
+      const postId = '-Kdeivj' + Math.random().toString().slice(2, 9) + 'dcJruU'
+      const post = {
+        text: this.newPost,
+        id: postId,
+        publishedAt: 1594035908,
+        threadId: this.threadId,
+        userId: this.authUserId
+      }
+      this.$store.dispatch('addPost', post)
+      this.$store.dispatch('addPostToThreads', post)
+      console.log(this.posts)
+
+      this.newPost = null
+    }
+  },
+  computed: {
+    ...mapState({
+      authUserId: 'authUserId'
+    }),
+    ...mapGetters({
+      authUser: 'authUser'
+    }),
+    thread () {
+      return this.threads.find(thread => thread.id === this.threadId)
+    },
+    firstPost () {
+      const post = this.threadPosts().shift()
+      return post
+    },
+    otherPosts () {
+      const post = this.threadPosts().slice(1, this.threadPosts().length)
+      return post
     }
   },
   beforeMount () {
     this.threadId = this.$route.params.id
+  },
+  mounted () {
+    console.log(this.posts)
   }
 }
 </script>
@@ -71,17 +123,55 @@ export default {
     justify-content: space-between;
   }
 
+  .thread-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: left;
+    margin: 10px 0px 30px 0px;
+  }
+  .thread-info p span {
+    display: block;
+    margin: 0px 0px 5px 0px;
+  }
+
+  .first-post,
   .new-post {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    border-bottom: thin solid #b6b5b5;
+    gap: 30px;
     padding-bottom: 20px;
     margin-bottom: 20px;
   }
+  .first-post {
+    border-bottom: thin solid #b6b5b5;
+  }
+  .user-post {
+    width: calc(100% - 90px);
+  }
+  .user-post p {
+    margin-top: 0px;
+  }
+
+  .auth-user-img,
+  .user-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .auth-user-img img,
+  .user-img img {
+    width: 100%;
+  }
+  .auth-user-input {
+    width: 70%;
+  }
   .new-post textarea {
-    width: 400px;
-    height: 150px;
+    width: 100%;
+    height: 170px;
     background: none;
     border-radius: 2px;
     border: thin solid #e0cccc;
@@ -95,5 +185,11 @@ export default {
   .add-post {
     display: block;
     padding: 8px 25px;
+  }
+
+  .post-comments {
+    margin-bottom: 40px;
+    font-weight: 500;
+    font-size: 1.01rem;
   }
 </style>
