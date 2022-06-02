@@ -1,3 +1,6 @@
+* {
+  --black-color: #414141;
+}
 body {
   font-size: 16px;
   font-family: 'Lato';
@@ -5,14 +8,15 @@ body {
   padding: 0px;
   box-sizing: border-box;
   background: #fcfcfc;
-  color: #414141;
+  color: var(--black-color);
 }
 h1, h2 {
   font-weight: 300;
 }
 .forum-view,
 .category-view,
-.thread-view {
+.thread-view,
+.list-display {
   padding: 20px 5% 10px 5%;
   display: flex;
   flex-wrap: wrap;
@@ -49,12 +53,21 @@ h1, h2 {
 
 .forums,
 .categories,
-.threads {
+.threads,
+.base-list-display {
   margin-top: 10px;
+}
+.forums a,
+.categories a,
+.threads a,
+.base-list-display a {
+  color: var(--black-color);
+  text-decoration: none;
 }
 .forum,
 .category,
-.thread {
+.thread,
+.base-list {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -68,47 +81,55 @@ h1, h2 {
 }
 .category:hover,
 .forum:hover,
-.thread:hover {
+.thread:hover,
+.base-list:hover {
   box-shadow: 0px 0px 10px #e7e7e7a4;
 }
 .forum h2,
 .category h2,
-.thread h2 {
+.thread h2,
+.base-list h2 {
   margin: 10px 0px;
 }
 .forum p,
 .category p,
-.thread p {
+.thread p,
+.base-list p {
   text-transform: capitalize;
 }
 
 .forum-info,
 .category-info,
-.thread-info {
+.thread-info,
+.base-list-info {
   text-align: center;
   padding: 0px;
 }
 .forum-info p,
 .category-info p,
-.thread-info p {
+.thread-info p,
+.base-list-info p {
   margin: 0px;
   display: inline-block;
 }
 .forum-info p *,
 .category-info p *,
-.thread-info p * {
+.thread-info p *,
+.base-list-info p * {
   display: block;
 }
 
 .forum-threads,
 .category-forums,
-.thread-posts {
+.thread-posts,
+.base-list-sublist {
   font-size: 0.9rem;
   margin: 10px 0px;
 }
 .forum-threads-length,
 .category-forums-length,
-.thread-posts-length {
+.thread-posts-length,
+.base-list-sublist-length {
   font-size: 1.3rem;
   font-weight: 500;
 }

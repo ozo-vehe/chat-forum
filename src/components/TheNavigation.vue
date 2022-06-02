@@ -1,54 +1,50 @@
 <template>
     <div class="navigation">
-        <div class="nav-bar">
-            <div class="nav-logo">
-                <img src="@/assets/logo.jpeg" alt="Vue School Logo">
-                <p>Vue School <br> Masterclass </p>
-            </div>
-            <div class="nav-list">
-                <ul>
-                    <li class="nav-home">
-                        <router-link :to="{ name: 'HomeView' }">Home</router-link>
-                    </li>
-                    <li class="nav-category">
-                        <router-link :to="{ name: 'CategoryView' }">Category</router-link>
-                    </li>
-                    <li class="nav-forums">
-                        <router-link :to="{ name: 'ForumsView' }">Forums</router-link>
-                    </li>
-                    <li class="nav-threads">
-                        <router-link :to="{ name: 'ThreadsView' }">Threads</router-link>
-                    </li>
-                </ul>
-            </div>
+      <div class="nav-bar">
+        <div class="nav-logo">
+          <img src="@/assets/logo.jpeg" alt="Vue School Logo">
+          <p>Vue School <br> Masterclass </p>
         </div>
-
-        <div v-if="auth_user" class="nav-user-info">
-            <div class="nav-user-img">
-                <img :src="auth_user.avatar" :alt="`${auth_user.username} profile picture`">
-            </div>
-            <p class="nav-user-username">{{ auth_user.username }}</p>
+        <div class="nav-list">
+          <ul>
+            <li class="nav-home">
+              <router-link :to="{ name: 'HomeView' }">Home</router-link>
+            </li>
+            <li class="nav-category">
+              <router-link :to="{ name: 'CategoryView' }">Category</router-link>
+            </li>
+            <li class="nav-forums">
+              <router-link :to="{ name: 'ForumsView' }">Forums</router-link>
+            </li>
+            <li class="nav-threads">
+              <router-link :to="{ name: 'ThreadsView' }">Threads</router-link>
+            </li>
+          </ul>
         </div>
+      </div>
 
-        <div v-else class="nav-login-signup">
+      <div v-if="authUser" class="nav-user-info">
+        <div class="nav-user-img">
+          <img :src="authUser.avatar" :alt="`${authUser.username} profile picture`">
+        </div>
+        <p class="nav-user-username">{{ authUser.username }}</p>
+      </div>
+
+      <div v-else class="nav-login-signup">
             <button class="user-signin">Sign In</button>
             <button class="user-signup">Sign Up</button>
-        </div>
+      </div>
     </div>
 </template>
 
 <script>
-import data from '@/data.json'
-
+import { mapGetters } from 'vuex'
 export default {
   name: 'TheNavigation',
   computed: {
-    users () {
-      return data.users
-    },
-    auth_user () {
-      return this.users.find(user => user.id === 'u4r8XCziZEWEXsj2UIKNHBoDh0n2')
-    }
+    ...mapGetters({
+      authUser: 'authUser'
+    })
   }
 }
 </script>

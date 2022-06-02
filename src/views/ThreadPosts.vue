@@ -1,14 +1,16 @@
 <template>
-  <div class="thread-posts">
+  <div class="thread-posts" v-if="thread">
     <div class="thread-title">
       <h1>{{ thread.title }}</h1>
-      <button class="btn">Edit thread</button>
+      <router-link :to="{ name: 'EditThreadView', params: { id: thread.id } }">
+        <button class="btn">Edit thread</button>
+      </router-link>
     </div>
 
     <div class="thread-info">
       <p>
         <span>Thread Author: {{ getUser(thread.userId).name }}</span>
-        <span>Contributors: {{ thread.contributors ? thread.contributors.length - 1 : 0 }}</span>
+        <span>Contributors: {{ thread.contributors ? thread.contributors.length : 0 }}</span>
       </p>
       <p>Created: {{ thread.publishedAt }}</p>
     </div>
@@ -27,7 +29,7 @@
         <img :src="authUser.avatar" alt="">
       </div>
       <div class="auth-user-input">
-        <textarea id="auth-user-text" v-model.lazy.trim="newPost" required></textarea>
+        <textarea id="auth-user-text" :class="{ error: error }" v-model.lazy.trim="newPost" required></textarea>
         <button @click="post" class="add-post btn">Post</button>
       </div>
     </div>
@@ -56,7 +58,8 @@ export default {
       threads: data.threads,
       users: data.users,
       threadId: null,
-      newPost: null
+      newPost: null,
+      error: false
     }
   },
   methods: {
@@ -69,18 +72,25 @@ export default {
     },
     post () {
       const postId = '-Kdeivj' + Math.random().toString().slice(2, 9) + 'dcJruU'
-      const post = {
-        text: this.newPost,
-        id: postId,
-        publishedAt: 1594035908,
-        threadId: this.threadId,
-        userId: this.authUserId
-      }
-      this.$store.dispatch('addPost', post)
-      this.$store.dispatch('addPostToThreads', post)
-      console.log(this.posts)
 
-      this.newPost = null
+      if (this.newPost) {
+        this.error = false
+
+        const post = {
+          text: this.newPost,
+          id: postId,
+          publishedAt: 1594035908,
+          threadId: this.threadId,
+          userId: this.authUserId
+        }
+        this.$store.dispatch('addPost', post)
+        this.$store.dispatch('addPostToThreads', post)
+        this.$store.dispatch('addPostToContributors', post)
+
+        this.newPost = null
+      } else {
+        this.error = true
+      }
     }
   },
   computed: {
@@ -106,7 +116,7 @@ export default {
     this.threadId = this.$route.params.id
   },
   mounted () {
-    console.log(this.posts)
+    console.log(data)
   }
 }
 </script>
@@ -181,6 +191,9 @@ export default {
     box-sizing: border-box;
     outline: none;
     margin-bottom: 10px;
+  }
+  .new-post textarea.error {
+    border: thin solid #e42525ea;
   }
   .add-post {
     display: block;

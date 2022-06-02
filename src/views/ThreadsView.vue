@@ -33,19 +33,19 @@
 </template>
 
 <script>
-import data from '@/data.json'
 import BaseListHeader from '@/components/BaseListHeader'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ThreadsView',
   components: {
     BaseListHeader
   },
-  data () {
-    return {
-      threads: data.threads,
-      users: data.users
-    }
+  computed: {
+    ...mapState({
+      threads: 'threads',
+      users: 'users'
+    })
   },
   methods: {
     threadAuthor (userId) {
